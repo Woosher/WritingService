@@ -1,0 +1,36 @@
+package controllers;
+
+
+import org.springframework.http.*;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.Arrays;
+
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static tools.Constants.remote_search_base_url;
+
+@RestController
+public class HttpController {
+
+    private static final String base_url = "/api/v1/";
+
+    @RequestMapping(value = base_url + "searchitems", method = POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public String postDataToElasticSearch(@RequestBody String resource) {
+        final String url = remote_search_base_url +"/items/searchitems";
+        return postUrl(url,resource);
+    }
+
+    private String postUrl(String url, String requestJson){
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> entity = new HttpEntity<String>(requestJson,headers);
+        return restTemplate.postForObject(url, entity, String.class);
+    }
+
+}

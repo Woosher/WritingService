@@ -24,7 +24,7 @@ public class HttpController {
     @ResponseBody
     public String postDataToElasticSearch(@RequestBody String resource) {
         final String url = remote_search_base_url +"/items/searchitems";
-        return "ok" ; //postUrl(url,resource);
+        return postUrl(url,resource);
     }
 
 
